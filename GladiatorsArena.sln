@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladiatorsArena", "GladiatorsArena\GladiatorsArena.csproj", "{E18DCB78-FB63-4A38-B090-87B1866E6EA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GladiatorsArenaTest", "GladiatorsArenaTest\GladiatorsArenaTest.csproj", "{042C91D1-0738-4414-ADF6-825C665E85EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B425ECB-C793-4A47-8A62-67B79064B5C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E18DCB78-FB63-4A38-B090-87B1866E6EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18DCB78-FB63-4A38-B090-87B1866E6EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18DCB78-FB63-4A38-B090-87B1866E6EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18DCB78-FB63-4A38-B090-87B1866E6EA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042C91D1-0738-4414-ADF6-825C665E85EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042C91D1-0738-4414-ADF6-825C665E85EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042C91D1-0738-4414-ADF6-825C665E85EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042C91D1-0738-4414-ADF6-825C665E85EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{042C91D1-0738-4414-ADF6-825C665E85EF} = {0B425ECB-C793-4A47-8A62-67B79064B5C9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F5EB86A7-DF41-4CE1-9A3E-8E6022DE0BB1}
+	EndGlobalSection
+EndGlobal
