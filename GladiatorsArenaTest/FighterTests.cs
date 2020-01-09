@@ -67,11 +67,11 @@ namespace GladiatorsArenaTest
         public void FighterLosesIndicatedAmountOfHealth()
         {
             // Arrange
+            using Fighter fighter = new Fighter();
+
             int expected = 2;
             int damage = 8;
             // Act
-            using Fighter fighter = new Fighter();
-
             fighter.Health = damage;
             int actual = fighter.Health;
             // Assert
@@ -89,11 +89,45 @@ namespace GladiatorsArenaTest
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            string expectedOutput = $"Hercules was damaged and lost {damage} health. Now has a health of {10 - damage}{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost {damage} health. Now has a health of {10 - damage}{Environment.NewLine}";
             // Act
             hercules.Health = damage;
+
+            string actual = stringWriter.ToString();
             // Assert
-            Assert.AreEqual<string>(expectedOutput, stringWriter.ToString());
+            Assert.AreEqual<string>(expected, actual);
+        }
+
+        [TestMethod]
+        public void DamageLogKeepsTrackAcrossMultipleFightersDamage()
+        {
+            // Arrange
+            using Fighter hercules = new Fighter("Hercules");
+            using Fighter conan = new Fighter("Conan");
+            using Fighter jetLee = new Fighter("Jet Lee");
+
+            hercules.HealthUpdate += hercules.HealthUpdateListener;
+            conan.HealthUpdate += conan.HealthUpdateListener;
+            jetLee.HealthUpdate += jetLee.HealthUpdateListener;
+
+            int damage = 5;
+
+            string expected = $"Hercules was damaged and lost 5 health. Now has a health of 5{Environment.NewLine}"
+                                  + $"Conan was damaged and lost 6 health. Now has a health of 4{Environment.NewLine}"
+                                  + $"Jet Lee was damaged and lost 7 health. Now has a health of 3{Environment.NewLine}";
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            // Act
+            hercules.Health = damage;
+            damage++;
+            conan.Health = damage;
+            damage++;
+            jetLee.Health = damage;
+
+            string actual = stringWriter.ToString();
+            // Assert
+            Assert.AreEqual<string>(expected, actual);
         }
     }
 }

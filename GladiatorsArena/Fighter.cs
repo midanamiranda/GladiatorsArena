@@ -17,7 +17,6 @@ namespace GladiatorsArena
         /// </summary>
         public Fighter()
         {
-            damageLog = new Stack<int>();
             fightPosition++;
         }
 
@@ -34,7 +33,7 @@ namespace GladiatorsArena
 
         // Fields
 
-        private readonly Stack<int> damageLog;
+        private static readonly Stack<int> damageLog = new Stack<int>();
 
         private static int fightPosition = 0;
 
@@ -54,7 +53,7 @@ namespace GladiatorsArena
             set { name = value; }
         }
 
-        private int health = 10;
+        private int health = 15;
 
         public int Health
         {
@@ -85,7 +84,8 @@ namespace GladiatorsArena
         /// <param name="fighter"></param>
         public void HealthUpdateListener()
         {
-            Console.WriteLine($"{this.Name} was damaged and lost {this.damageLog.Pop()} health. Now has a health of {this.Health}");
+            int health = this.Health < 0 ? 0 : this.Health;
+            Console.WriteLine($"{this.Name} was damaged and lost {damageLog.Pop()} health. Now has a health of {health}");
         }
 
         /// <summary>

@@ -43,9 +43,6 @@ namespace GladiatorsArenaTest
         public void DeadFighterFoundAndBattleTurnedOff()
         {
             // Arrange
-            using StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-
             using Fighter hercules = new Fighter("Hercules");
 
             List<Fighter> fightersList = new List<Fighter>
@@ -53,15 +50,19 @@ namespace GladiatorsArenaTest
                 hercules
             };
 
-            string expectedOutput = $"Hercules has lost his life! The game is over.{Environment.NewLine}";
-            int damage = 11;
-            // Act
             using Battle battle = new Battle(fightersList);
-            battle.FightersList.ForEach(fighter => fighter.DeadFighter += fighter.DeadFighterListener );
-            
+
+            string expected = $"Hercules has lost his life! The game is over.{Environment.NewLine}";
+            int damage = 11;
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            // Act            
+            battle.FightersList.ForEach(fighter => fighter.DeadFighter += fighter.DeadFighterListener );           
             battle.FightersList[0].Health = damage;
+            string actual = stringWriter?.ToString();
             // Assert
-            Assert.AreEqual<string>(expectedOutput, stringWriter?.ToString());
+            Assert.AreEqual<string>(expected, actual);
             Assert.IsFalse(Battle.IsStillOn);
         }
 
@@ -80,11 +81,10 @@ namespace GladiatorsArenaTest
                 conan
             };
 
-            int damage = 5;
-
-            string expected = "Hercules";
-
             Battle battle = new Battle(fightersList);
+            
+            string expected = "Hercules";
+            int damage = 5;
             // Act
             for (int i = 0; i < battle.FightersList.Count; i++)
             {
@@ -93,8 +93,9 @@ namespace GladiatorsArenaTest
             }
 
             Fighter winner = battle.GetWinner();
+            string actual = winner.Name;
             // Assert
-            Assert.AreEqual<string>(expected, winner.Name);
+            Assert.AreEqual<string>(expected, actual);
         }
     }
 }

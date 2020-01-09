@@ -22,23 +22,35 @@ namespace GladiatorsArena
 
             battle.FightersList.ForEach(fighter => fighter.AssigneHealthListeners());
 
+            Console.WriteLine("Welcome to the Gladiators Arena!!");
+            Console.WriteLine("\nThe Fighters for today are:");
+
+            battle.FightersList.ForEach(fighter => Console.WriteLine($"{fighter.Code} - {fighter.Name}"));
+
+            Console.WriteLine("\nLet´s Fight!!\n");
+
             Random dice = new Random();
             int damage;
+            int roundCount = 1;
 
             do
             {
+                Console.WriteLine($"\nRound {roundCount++}\n");
+                
                 for(int i = 0; i < battle.FightersList.Count; i++)
                 {
-                    damage = dice.Next(1, 11);
+                    damage = dice.Next(1, 8);
                     battle.FightersList[i].Health = damage;
                     if (battle.FightersList[i].Health <= 0) break;
-                }              
+                }
+
+                Console.WriteLine("");
             }
             while (Battle.IsStillOn);
 
             Fighter winner = battle.GetWinner();
 
-            Console.WriteLine($"{winner.Name} wins!!");
+            Console.WriteLine($"\n{winner.Name} Takes the Crown!!");
         }
     }
 }
