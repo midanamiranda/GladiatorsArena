@@ -53,7 +53,7 @@ namespace GladiatorsArenaTest
             using Battle battle = new Battle(fightersList);
 
             string expected = $"Hercules has lost his life! The game is over.{Environment.NewLine}";
-            int damage = 11;
+            int damage = 16;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
