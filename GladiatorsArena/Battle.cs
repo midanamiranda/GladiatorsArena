@@ -34,12 +34,6 @@ namespace GladiatorsArena
 			set
 			{
 				fightersList = value;
-				if(deadFighterTrack.Count != 0)
-				{
-					FighterListChanged(this, new FightersListEventArgs() { listChanged = deadFighterTrack.Peek().ToString() });
-					deadFighterTrack.Pop();
-				}					
-				if (fightersList.Count == 1) IsStillOn = false;
 			}
 		}
 
@@ -64,6 +58,12 @@ namespace GladiatorsArena
 			var deadFighter = this.FightersList.Find(fighter => fighter.IsDead == true);
 			deadFighterTrack.Push(deadFighter);
 			this.FightersList.Remove(deadFighterTrack.Peek());
+			if (deadFighterTrack.Count != 0)
+			{
+				FighterListChanged(this, new FightersListEventArgs() { listChanged = deadFighterTrack.Peek().ToString() });
+				deadFighterTrack.Pop();
+			}
+			if (fightersList.Count == 1) IsStillOn = false;
 		}
 
 		//public void GenerateClash()
