@@ -21,9 +21,13 @@ namespace GladiatorsArena
             Battle battle = new Battle(fightersList);
 
             battle.FightersList.ForEach(fighter => fighter.AssigneHealthListeners());
+            battle.FighterListChanged += delegate (object sender, FightersListEventArgs e)
+            {
+                Console.WriteLine($"{sender.GetType()} , {e.listChanged}");
+            };
 
             Console.WriteLine("Welcome to the Gladiators Arena!!");
-            Console.WriteLine("\nThe Fighters for today are:");
+            Console.WriteLine("\nThe Fighters for today are:\n");
 
             battle.FightersList.ForEach(fighter => Console.WriteLine($"{fighter.Code} - {fighter.Name}"));
 
@@ -39,9 +43,13 @@ namespace GladiatorsArena
                 
                 for(int i = 0; i < battle.FightersList.Count; i++)
                 {
-                    damage = dice.Next(1, 8);
+                    damage = dice.Next(1, Battle.MaxHealthLoss + 1);
                     battle.FightersList[i].Health = damage;
-                    if (battle.FightersList[i].Health <= 0) break;
+                    if (battle.FightersList[i].IsDead)
+                    {
+                        battle.CleanDeadFighter();
+                        break;
+                    }
                 }
 
                 Console.WriteLine("");
@@ -50,7 +58,7 @@ namespace GladiatorsArena
 
             Fighter winner = battle.GetWinner();
 
-            Console.WriteLine($"\n{winner.Name} Takes the Crown!!");
+            Console.WriteLine($"\n{winner.Name} wins it and takes the Crown!!");
         }
     }
 }

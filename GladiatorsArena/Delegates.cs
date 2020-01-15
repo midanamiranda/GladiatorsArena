@@ -6,4 +6,5 @@ namespace GladiatorsArena
 {
     // define the delegate for the event handler
     public delegate void fighterHealthHandler();
+
 }
