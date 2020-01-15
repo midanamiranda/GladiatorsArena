@@ -23,7 +23,7 @@ namespace GladiatorsArena
             battle.FightersList.ForEach(fighter => fighter.AssigneHealthListeners());
 
             Console.WriteLine("Welcome to the Gladiators Arena!!");
-            Console.WriteLine("\nThe Fighters for today are:\n");
+            Console.WriteLine("\nThe Fighters for today are:");
 
             battle.FightersList.ForEach(fighter => Console.WriteLine($"{fighter.Code} - {fighter.Name}"));
 
@@ -50,7 +50,7 @@ namespace GladiatorsArena
 
             Fighter winner = battle.GetWinner();
 
-            Console.WriteLine($"\n{winner.Name} wins it and takes the Crown!!");
+            Console.WriteLine($"\n{winner.Name} Takes the Crown!!");
         }
     }
 }
