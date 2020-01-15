@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GladiatorsArena;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace GladiatorsArenaTest
 {
@@ -89,7 +90,7 @@ namespace GladiatorsArenaTest
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            string expected = $"Hercules was damaged and lost {damage} health. Now has a health of {Battle.MaxFighterHealth - damage}{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost {damage} health but still has a health of {Battle.MaxFighterHealth - damage}.{Environment.NewLine}";
             // Act
             hercules.Health = damage;
 
@@ -112,9 +113,9 @@ namespace GladiatorsArenaTest
 
             int damage = 5;
 
-            string expected = $"Hercules was damaged and lost 5 health. Now has a health of {Battle.MaxFighterHealth - 5}{Environment.NewLine}"
-                                  + $"Conan was damaged and lost 6 health. Now has a health of {Battle.MaxFighterHealth - 6}{Environment.NewLine}"
-                                  + $"Jet Lee was damaged and lost 7 health. Now has a health of {Battle.MaxFighterHealth - 7}{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost 5 health but still has a health of {Battle.MaxFighterHealth - 5}.{Environment.NewLine}"
+                                  + $"Conan was damaged and lost 6 health but still has a health of {Battle.MaxFighterHealth - 6}.{Environment.NewLine}"
+                                  + $"Jet Lee was damaged and lost 7 health but still has a health of {Battle.MaxFighterHealth - 7}.{Environment.NewLine}";
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
@@ -126,6 +127,32 @@ namespace GladiatorsArenaTest
             jetLee.Health = damage;
 
             string actual = stringWriter.ToString();
+            // Assert
+            Assert.AreEqual<string>(expected, actual);
+        }
+
+        [TestMethod]
+        public void DeadFighterFound()
+        {
+            // Arrange
+            using Fighter hercules = new Fighter("Hercules");
+
+            List<Fighter> fightersList = new List<Fighter>
+            {
+                hercules
+            };
+
+            using Battle battle = new Battle(fightersList);
+            battle.FightersList.ForEach(fighter => fighter.DeadFighter += fighter.DeadFighterListener);
+
+            string expected = $"Hercules has lost his life !!";
+            int damage = Battle.MaxFighterHealth + 1;
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            // Act
+            battle.FightersList[0].Health = damage;
+            string actual = stringWriter?.ToString();
             // Assert
             Assert.AreEqual<string>(expected, actual);
         }

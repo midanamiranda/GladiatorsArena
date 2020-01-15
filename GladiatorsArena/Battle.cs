@@ -4,89 +4,90 @@ using System.Text;
 
 namespace GladiatorsArena
 {
-	public class Battle : IDisposable
+    public class Battle : IDisposable
     {
-		// declare the events to be handled
-		public event EventHandler<FightersListEventArgs> FighterListChanged;
+        // Events
 
-		// Contructors
+        public event EventHandler<FightersListEventArgs> FighterListChanged;
 
-		public Battle(List<Fighter> fightersList)
-		{
-			FightersList = fightersList;
-		}
+        // Contructors
 
-		// Fields
+        public Battle(List<Fighter> fightersList)
+        {
+            FightersList = fightersList;
+        }
 
-		private static readonly Stack<Fighter> deadFighterTrack = new Stack<Fighter>();
+        // Fields
 
-		// Properties
+        private static readonly Stack<Fighter> deadFighterTrack = new Stack<Fighter>();
 
-		public static int MaxFighterHealth { get; set; } = 8;
-		public static int MaxHealthLoss { get; set; } = 5;
-		public static bool IsStillOn { get; set; } = true;
+        // Properties
 
-		private List<Fighter> fightersList;
+        public static int MaxFighterHealth { get; set; } = 15;
+        public static int MaxHealthLoss { get; set; } = 7;
+        public static bool IsStillOn { get; set; } = true;
 
-		public List<Fighter> FightersList
-		{
-			get { return fightersList; }
-			set
-			{
-				fightersList = value;
-			}
-		}
+        private List<Fighter> fightersList;
 
-		// Members
+        public List<Fighter> FightersList
+        {
+            get { return fightersList; }
+            set
+            {
+                fightersList = value;
+                if (deadFighterTrack.Count != 0)
+                    FighterListChanged(this, new FightersListEventArgs(deadFighterTrack.Pop().Name));
+                if (fightersList.Count <= 1) 
+                    IsStillOn = false;
+            }
+        }
 
-		/// <summary>
-		/// Returns the fighter with the most health in the FighterList
-		/// </summary>
-		/// <returns></returns>
-		public Fighter GetWinner()
-		{
-			List<Fighter> sortedFightersList = this.fightersList;
-			sortedFightersList.Sort((x, y) => x.Health.CompareTo(y.Health));
-			return sortedFightersList[sortedFightersList.Count - 1];
-		}
+        // Members
 
-		/// <summary>
-		/// Finds the fighter with IsDead tag true and removes it from the battle list
-		/// </summary>
-		internal void CleanDeadFighter()
-		{
-			var deadFighter = this.FightersList.Find(fighter => fighter.IsDead == true);
-			deadFighterTrack.Push(deadFighter);
-			this.FightersList.Remove(deadFighterTrack.Peek());
-			if (deadFighterTrack.Count != 0)
-			{
-				FighterListChanged(this, new FightersListEventArgs() { listChanged = deadFighterTrack.Peek().ToString() });
-				deadFighterTrack.Pop();
-			}
-			if (fightersList.Count == 1) IsStillOn = false;
-		}
+        /// <summary>
+        /// Returns the fighter with the most health in the FighterList
+        /// </summary>
+        /// <returns></returns>
+        public Fighter GetWinner()
+        {
+            return this.fightersList.Find(fighter => fighter.IsDead == false);
+        }
 
-		//public void GenerateClash()
-		//{
-		//	HashSet<int> attackedFighters = new HashSet<int>(this.FightersList.Count / 2);
-		//}
+        /// <summary>
+        /// Find the Dead Fighter, remove it from the Fighters List and help manage the main program loop
+        /// </summary>
+        /// <param name="i"></param>
+        public void CleanDeadFighter(ref int i)
+        {
+            Fighter deadFighter = this.FightersList.Find(fighter => fighter.IsDead == true);
+            deadFighterTrack.Push(deadFighter);
+            this.FightersList = this.FightersList.FindAll(fighter => fighter.IsDead != true);
+            i -= 1;
+        }
 
-		// IDisposable Members
+        //public void GenerateClash()
+        //{
+        //	HashSet<int> attackedFighters = new HashSet<int>(this.FightersList.Count / 2);
+        //}
 
-		/// <summary>
-		/// By the end of the method, if using the 'using' keyword,
-		/// the battle list will be cleared
-		/// and static field will be turned on
-		/// </summary>
-		public void Dispose()
-		{
-			this.FightersList.Clear();
-			IsStillOn = true;
-		}		
-	}
+        // Event Listeners
 
-	public class FightersListEventArgs : EventArgs
-	{
-		public string listChanged;
-	}
+        public void FighterRemovedListener(object sender, FightersListEventArgs e)
+        {
+            Console.WriteLine($" {e.removedFighter} is now out of the battle!");
+        }
+
+        // IDisposable Members
+
+        /// <summary>
+        /// By the end of the method, if using the 'using' keyword,
+        /// the battle list will be cleared
+        /// and static field will be turned on
+        /// </summary>
+        public void Dispose()
+        {
+            this.FightersList.Clear();
+            IsStillOn = true;
+        }
+    }    
 }

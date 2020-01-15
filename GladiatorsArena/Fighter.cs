@@ -6,7 +6,8 @@ namespace GladiatorsArena
 {
     public class Fighter : IDisposable
     {
-        // declare the events to be handled
+        // Events
+
         public event fighterHealthHandler HealthUpdate;
         public event fighterHealthHandler DeadFighter;
         
@@ -91,7 +92,7 @@ namespace GladiatorsArena
         public void HealthUpdateListener()
         {
             int health = this.Health < 0 ? 0 : this.Health;
-            Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()} health. Now has a health of {health}");
+            Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()} health but still has a health of {health}.");
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace GladiatorsArena
 		/// <param name="fighter"></param>
 		public void DeadFighterListener()
         {
-            Console.WriteLine($"{this.Name} has lost his life! The game has 1 less player.");
+            Console.Write($"{this.Name} has lost his life !!");
         }
 
         // IDisposable Members
