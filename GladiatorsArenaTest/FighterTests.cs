@@ -90,7 +90,7 @@ namespace GladiatorsArenaTest
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            string expected = $"Hercules was damaged and lost {damage} health but still has a health of {Battle.MaxFighterHealth - damage}.{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost {damage}. His health is now down to {Battle.MaxFighterHealth - damage}.{Environment.NewLine}";
             // Act
             hercules.Health = damage;
 
@@ -113,9 +113,9 @@ namespace GladiatorsArenaTest
 
             int damage = 5;
 
-            string expected = $"Hercules was damaged and lost 5 health but still has a health of {Battle.MaxFighterHealth - 5}.{Environment.NewLine}"
-                                  + $"Conan was damaged and lost 6 health but still has a health of {Battle.MaxFighterHealth - 6}.{Environment.NewLine}"
-                                  + $"Jet Lee was damaged and lost 7 health but still has a health of {Battle.MaxFighterHealth - 7}.{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost 5. His health is now down to {Battle.MaxFighterHealth - 5}.{Environment.NewLine}"
+                                  + $"Conan was damaged and lost 6. His health is now down to {Battle.MaxFighterHealth - 6}.{Environment.NewLine}"
+                                  + $"Jet Lee was damaged and lost 7. His health is now down to {Battle.MaxFighterHealth - 7}.{Environment.NewLine}";
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);

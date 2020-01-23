@@ -69,7 +69,7 @@ namespace GladiatorsArena
             }
             catch (Exception)
             {
-                Console.WriteLine("Hardcore Fight!! Everyone is dead");
+                Console.WriteLine("Hardcore Fight!! Everyone is dead.");
             }
         }
     }

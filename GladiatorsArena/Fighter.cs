@@ -81,7 +81,7 @@ namespace GladiatorsArena
         public void HealthUpdateListener()
         {
             int health = this.Health < 0 ? 0 : this.Health;
-            Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()} health but still has a health of {health}.");
+            Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()}. His health is now down to {health}.");
         }
 
         // IDisposable Members
