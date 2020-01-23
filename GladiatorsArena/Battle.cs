@@ -36,8 +36,8 @@ namespace GladiatorsArena
             {
                 fightersList = value;
                 if (deadFighterTrack.Count != 0)
-                    RemovedFighter(this, new FightersListEventArgs(deadFighterTrack.Pop().Name));
-                if (fightersList.Count <= 1) 
+                    RemovedFighter?.Invoke(this, new FightersListEventArgs(deadFighterTrack.Pop().Name));
+                if (fightersList.Count <= 1)
                     IsStillOn = false;
             }
         }
@@ -54,21 +54,48 @@ namespace GladiatorsArena
         }
 
         /// <summary>
-        /// Find the Dead Fighter, remove it from the Fighters List and help manage the main program loop
+        /// Find the Dead Fighter, remove it from the Fighters List
         /// </summary>
-        /// <param name="i"></param>
-        public void CleanDeadFighter(ref int i)
+        public void CleanDeadFighter()
         {
             Fighter deadFighter = this.FightersList.Find(fighter => fighter.IsDead == true);
             deadFighterTrack.Push(deadFighter);
             this.FightersList = this.FightersList.FindAll(fighter => fighter.IsDead != true);
-            i -= 1;
         }
 
-        //public void GenerateClash()
-        //{
-        //	HashSet<int> attackedFighters = new HashSet<int>(this.FightersList.Count / 2);
-        //}
+        public void GenerateClash(HashSet<Fighter> attackingFighters, HashSet<Fighter> damagedFighters)
+        {
+            Random rnd = new Random();            
+            int atkListSize = this.FightersList.Count % 2 == 0 ? this.FightersList.Count / 2 : (this.FightersList.Count / 2) + 1;
+            List<int> fgts = new List<int>();
+
+            do
+            {
+                int fgt = rnd.Next(0, this.FightersList.Count);
+                try
+                {
+                    attackingFighters.Add(this.FightersList[fgt]);
+                    fgts.Add(fgt);
+                }
+                catch (Exception) { }
+            }
+            while (attackingFighters.Count < atkListSize);
+
+            do
+            {
+                int fgt = rnd.Next(0, this.FightersList.Count);
+                if (!fgts.Contains(fgt))
+                {
+                    try
+                    {
+                        damagedFighters.Add(this.FightersList[fgt]);
+                    }
+                    catch (Exception) { }
+                }
+            }
+            while (damagedFighters.Count < (this.FightersList.Count - atkListSize));
+
+        }
 
         // Event Listeners
 
@@ -89,5 +116,5 @@ namespace GladiatorsArena
             this.FightersList.Clear();
             IsStillOn = true;
         }
-    }    
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GladiatorsArena
 {
@@ -43,22 +44,29 @@ namespace GladiatorsArena
 
             Random dice = new Random();
             int damage;
-            int roundCount = 1;
 
             do
             {
-                Console.WriteLine($"\nRound {roundCount++}\n");
-                
-                for(int i = 0; i < battle.FightersList.Count; i++)
+                HashSet<Fighter> attackingFighters = new HashSet<Fighter>();
+                HashSet<Fighter> damagedFighters = new HashSet<Fighter>();
+
+                battle.GenerateClash(attackingFighters, damagedFighters);
+
+                List<Fighter> attackingFightersList = attackingFighters.ToList();
+                List<Fighter> damagedFightersList = damagedFighters.ToList();
+
+                for (int i = 0; i < damagedFightersList.Count; i++)
                 {
                     damage = dice.Next(1, Battle.MaxHealthLoss + 1);
-                    battle.FightersList[i].Health = damage;
-                    
-                    if (battle.FightersList[i].IsDead)
-                        battle.CleanDeadFighter(ref i);                    
-                }
 
-                Console.WriteLine("");
+                    Console.WriteLine($"{attackingFightersList[i].Name} strikes {damagedFightersList[i].Name} !!");
+                    damagedFightersList[i].Health = damage;
+
+                    if (damagedFightersList[i].IsDead)
+                        battle.CleanDeadFighter();
+                    
+                    Console.WriteLine("");
+                }
             }
             while (Battle.IsStillOn);
 
@@ -71,6 +79,7 @@ namespace GladiatorsArena
             {
                 Console.WriteLine("Hardcore Fight!! Everyone is dead.");
             }
+
         }
     }
 }

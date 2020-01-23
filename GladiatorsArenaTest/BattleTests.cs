@@ -88,20 +88,19 @@ namespace GladiatorsArenaTest
 
             string expected = $"Hercules has lost his life and is now out of the battle !!{Environment.NewLine}";
             int damage = Battle.MaxFighterHealth + 1;
-            int i = 1;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
             // Act
             battle.FightersList[0].Health = damage;
-            battle.CleanDeadFighter(ref i);
+            battle.CleanDeadFighter();
             string actual = stringWriter?.ToString();
             // Assert
             Assert.AreEqual<string>(expected, actual);
         }
 
         [TestMethod]
-        public void BattleHasDeadFighterRemovedAndCounterDecremented()
+        public void BattleHasDeadFighterRemoved()
         {
             // Arrange
             using Fighter hercules = new Fighter("Hercules");
@@ -119,20 +118,18 @@ namespace GladiatorsArenaTest
             battle.RemovedFighter += battle.FighterRemovedListener;
 
             int damage = Battle.MaxFighterHealth + 1;
-            int counter = 5;
 
             string expected = $"Jet Lee has lost his life and is now out of the battle !!{Environment.NewLine}" +
                                 $"Conan has lost his life and is now out of the battle !!{Environment.NewLine}" +
                                 $"Hercules{Environment.NewLine}";
-            int expectedCounter = 3;
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
             // Act
             battle.FightersList[1].Health = damage;
-            if (battle.FightersList[1].IsDead) battle.CleanDeadFighter(ref counter);
+            if (battle.FightersList[1].IsDead) battle.CleanDeadFighter();
             battle.FightersList[1].Health = damage;
-            if (battle.FightersList[1].IsDead) battle.CleanDeadFighter(ref counter);
+            if (battle.FightersList[1].IsDead) battle.CleanDeadFighter();
 
             battle.FightersList.ForEach(fighter => Console.WriteLine(fighter.Name));
 
@@ -140,7 +137,70 @@ namespace GladiatorsArenaTest
             // Assert
             Assert.AreEqual<string>(expected, actual);
             Assert.IsTrue(battle.FightersList.Count == 1);
-            Assert.AreEqual<int>(expectedCounter, counter);
+        }
+
+        [TestMethod]
+        public void ClashesListsWithAllFightersFromEvenPairedBattle()
+        {
+            // Arrange
+            using Fighter hercules = new Fighter("Hercules");
+            using Fighter conan = new Fighter("Conan");
+            using Fighter jetLee = new Fighter("Jet Lee");
+            using Fighter chuckNorris = new Fighter("Chuck Norris");
+            using Fighter creed = new Fighter("Creed");
+            using Fighter balboa = new Fighter("Balboa");
+
+            List<Fighter> fightersList = new List<Fighter>
+            {
+                hercules,
+                conan,
+                jetLee,
+                chuckNorris,
+                creed,
+                balboa
+            };
+
+            using Battle battle = new Battle(fightersList);
+
+            int atkListSize = battle.FightersList.Count % 2 == 0 ? battle.FightersList.Count / 2 : (battle.FightersList.Count / 2) + 1;
+            HashSet<Fighter> attackingFighters = new HashSet<Fighter>();
+            HashSet<Fighter> damagedFighters = new HashSet<Fighter>();
+            // Act
+            battle.GenerateClash(attackingFighters, damagedFighters);
+            // Assert
+            Assert.AreEqual<int>(atkListSize, attackingFighters.Count);
+            Assert.AreEqual<int>(battle.FightersList.Count - atkListSize, damagedFighters.Count);
+        }
+
+        [TestMethod]
+        public void ClashesListsWithAllFightersFromNotEvenPairedBattle()
+        {
+            // Arrange
+            using Fighter hercules = new Fighter("Hercules");
+            using Fighter conan = new Fighter("Conan");
+            using Fighter jetLee = new Fighter("Jet Lee");
+            using Fighter chuckNorris = new Fighter("Chuck Norris");
+            using Fighter creed = new Fighter("Creed");
+
+            List<Fighter> fightersList = new List<Fighter>
+            {
+                hercules,
+                conan,
+                jetLee,
+                chuckNorris,
+                creed
+            };
+
+            using Battle battle = new Battle(fightersList);
+
+            int atkListSize = battle.FightersList.Count % 2 == 0 ? battle.FightersList.Count / 2 : (battle.FightersList.Count / 2) + 1;
+            HashSet<Fighter> attackingFighters= new HashSet<Fighter>();
+            HashSet<Fighter> damagedFighters = new HashSet<Fighter>();
+            // Act
+            battle.GenerateClash(attackingFighters, damagedFighters);
+            // Assert
+            Assert.AreEqual<int>(atkListSize, attackingFighters.Count);
+            Assert.AreEqual<int>(battle.FightersList.Count - atkListSize, damagedFighters.Count);
         }
     }
 }
