@@ -11,16 +11,12 @@ namespace GladiatorsArena
             Fighter hercules = new Fighter("Hercules");
             Fighter conan = new Fighter("Conan");
             Fighter jetLee = new Fighter("Jet Lee");
-            Fighter chuckNorris = new Fighter("Chuck Norris");
-            Fighter creed = new Fighter("Creed");
 
             List<Fighter> fightersList = new List<Fighter>
             {
                 hercules,
                 conan,
-                jetLee,
-                chuckNorris,
-                creed
+                jetLee
             };
 
             Battle battle = new Battle(fightersList);

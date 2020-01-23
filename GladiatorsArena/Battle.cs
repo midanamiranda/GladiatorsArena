@@ -45,7 +45,7 @@ namespace GladiatorsArena
         // Members
 
         /// <summary>
-        /// Returns the fighter with the most health in the FighterList
+        /// Returns the fighter with the IsDead flag set to false
         /// </summary>
         /// <returns></returns>
         public Fighter GetWinner()
@@ -63,6 +63,11 @@ namespace GladiatorsArena
             this.FightersList = this.FightersList.FindAll(fighter => fighter.IsDead != true);
         }
 
+        /// <summary>
+        /// Splits the FightersList in two sides to allow coordination in the attacks
+        /// </summary>
+        /// <param name="attackingFighters"></param>
+        /// <param name="damagedFighters"></param>
         public void GenerateClash(HashSet<Fighter> attackingFighters, HashSet<Fighter> damagedFighters)
         {
             Random rnd = new Random();            
@@ -99,6 +104,11 @@ namespace GladiatorsArena
 
         // Event Listeners
 
+        /// <summary>
+        /// Displays the DeadFighter to be removed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void FighterRemovedListener(object sender, FightersListEventArgs e)
         {
             Console.WriteLine($"{e.removedFighter} has lost his life and is now out of the battle !!");
