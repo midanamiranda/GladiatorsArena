@@ -24,8 +24,8 @@ namespace GladiatorsArena
 
             Battle battle = new Battle(fightersList);
 
-            battle.FightersList.ForEach(fighter => fighter.AssigneHealthListeners());
-            battle.FighterListChanged += battle.FighterRemovedListener;
+            battle.FightersList.ForEach(fighter => fighter.HealthUpdate += fighter.HealthUpdateListener);
+            battle.RemovedFighter += battle.FighterRemovedListener;
 
             Console.WriteLine("Welcome to the Gladiators Arena!!");
             
@@ -53,7 +53,9 @@ namespace GladiatorsArena
                 {
                     damage = dice.Next(1, Battle.MaxHealthLoss + 1);
                     battle.FightersList[i].Health = damage;
-                    if (battle.FightersList[i].IsDead) battle.CleanDeadFighter(ref i);                    
+                    
+                    if (battle.FightersList[i].IsDead)
+                        battle.CleanDeadFighter(ref i);                    
                 }
 
                 Console.WriteLine("");

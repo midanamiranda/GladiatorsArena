@@ -8,7 +8,7 @@ namespace GladiatorsArena
     {
         // Events
 
-        public event EventHandler<FightersListEventArgs> FighterListChanged;
+        public event EventHandler<FightersListEventArgs> RemovedFighter;
 
         // Contructors
 
@@ -36,7 +36,7 @@ namespace GladiatorsArena
             {
                 fightersList = value;
                 if (deadFighterTrack.Count != 0)
-                    FighterListChanged(this, new FightersListEventArgs(deadFighterTrack.Pop().Name));
+                    RemovedFighter(this, new FightersListEventArgs(deadFighterTrack.Pop().Name));
                 if (fightersList.Count <= 1) 
                     IsStillOn = false;
             }
@@ -74,7 +74,7 @@ namespace GladiatorsArena
 
         public void FighterRemovedListener(object sender, FightersListEventArgs e)
         {
-            Console.WriteLine($" {e.removedFighter} is now out of the battle!");
+            Console.WriteLine($"{e.removedFighter} has lost his life and is now out of the battle !!");
         }
 
         // IDisposable Members

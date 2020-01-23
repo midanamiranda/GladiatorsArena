@@ -73,6 +73,34 @@ namespace GladiatorsArenaTest
         }
 
         [TestMethod]
+        public void DeadFighterFound()
+        {
+            // Arrange
+            using Fighter hercules = new Fighter("Hercules");
+
+            List<Fighter> fightersList = new List<Fighter>
+            {
+                hercules
+            };
+
+            using Battle battle = new Battle(fightersList);
+            battle.RemovedFighter += battle.FighterRemovedListener;
+
+            string expected = $"Hercules has lost his life and is now out of the battle !!{Environment.NewLine}";
+            int damage = Battle.MaxFighterHealth + 1;
+            int i = 1;
+
+            using StringWriter stringWriter = new StringWriter();
+            Console.SetOut(stringWriter);
+            // Act
+            battle.FightersList[0].Health = damage;
+            battle.CleanDeadFighter(ref i);
+            string actual = stringWriter?.ToString();
+            // Assert
+            Assert.AreEqual<string>(expected, actual);
+        }
+
+        [TestMethod]
         public void BattleHasDeadFighterRemovedAndCounterDecremented()
         {
             // Arrange
@@ -88,13 +116,13 @@ namespace GladiatorsArenaTest
             };
 
             using Battle battle = new Battle(fightersList);
-            battle.FighterListChanged += battle.FighterRemovedListener;
+            battle.RemovedFighter += battle.FighterRemovedListener;
 
             int damage = Battle.MaxFighterHealth + 1;
             int counter = 5;
 
-            string expected = $" Jet Lee is now out of the battle!{Environment.NewLine}" +
-                                $" Conan is now out of the battle!{Environment.NewLine}" +
+            string expected = $"Jet Lee has lost his life and is now out of the battle !!{Environment.NewLine}" +
+                                $"Conan has lost his life and is now out of the battle !!{Environment.NewLine}" +
                                 $"Hercules{Environment.NewLine}";
             int expectedCounter = 3;
 

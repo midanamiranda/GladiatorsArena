@@ -9,7 +9,6 @@ namespace GladiatorsArena
         // Events
 
         public event fighterHealthHandler HealthUpdate;
-        public event fighterHealthHandler DeadFighter;
         
         // Constructors
 
@@ -67,21 +66,11 @@ namespace GladiatorsArena
                 health -= damageTrack.Peek();
                 HealthUpdate?.Invoke();
                 if (health <= 0)
-                {
-                    IsDead = true;
-                    DeadFighter?.Invoke();
-                }
-                   
+                    IsDead = true;                   
             }
         }
 
         // Members
-
-        internal void AssigneHealthListeners()
-        {
-            this.HealthUpdate += HealthUpdateListener;
-            this.DeadFighter += DeadFighterListener;
-        }
 
         // Event Listeners
 
@@ -93,15 +82,6 @@ namespace GladiatorsArena
         {
             int health = this.Health < 0 ? 0 : this.Health;
             Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()} health but still has a health of {health}.");
-        }
-
-        /// <summary>
-		/// Display that the given fighter has lost his life and switch Battle.IsStillOn to false
-		/// </summary>
-		/// <param name="fighter"></param>
-		public void DeadFighterListener()
-        {
-            Console.Write($"{this.Name} has lost his life !!");
         }
 
         // IDisposable Members

@@ -130,31 +130,5 @@ namespace GladiatorsArenaTest
             // Assert
             Assert.AreEqual<string>(expected, actual);
         }
-
-        [TestMethod]
-        public void DeadFighterFound()
-        {
-            // Arrange
-            using Fighter hercules = new Fighter("Hercules");
-
-            List<Fighter> fightersList = new List<Fighter>
-            {
-                hercules
-            };
-
-            using Battle battle = new Battle(fightersList);
-            battle.FightersList.ForEach(fighter => fighter.DeadFighter += fighter.DeadFighterListener);
-
-            string expected = $"Hercules has lost his life !!";
-            int damage = Battle.MaxFighterHealth + 1;
-
-            using StringWriter stringWriter = new StringWriter();
-            Console.SetOut(stringWriter);
-            // Act
-            battle.FightersList[0].Health = damage;
-            string actual = stringWriter?.ToString();
-            // Assert
-            Assert.AreEqual<string>(expected, actual);
-        }
     }
 }
