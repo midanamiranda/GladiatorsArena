@@ -6,9 +6,9 @@ namespace GladiatorsArena
 {
     public class Fighter : IDisposable
     {
-        // declare the events to be handled
+        // Events
+
         public event fighterHealthHandler HealthUpdate;
-        public event fighterHealthHandler DeadFighter;
         
         // Constructors
 
@@ -27,20 +27,22 @@ namespace GladiatorsArena
         public Fighter(string name)
             : this()
         {
-            Code = fightPosition.ToString();
+            Code = fightPosition;
             Name = name;
         }
 
         // Fields
 
-        private static readonly Stack<int> damageLog = new Stack<int>();
+        private static readonly Stack<int> damageTrack = new Stack<int>();
 
         private static int fightPosition = 0;
 
         // Properties
 
-        private string code;
-        public string Code
+        public bool IsDead { get; set; } = false;
+
+        private int code;
+        public int Code
         {
             get { return code; }
             set { code = value; }
@@ -53,28 +55,22 @@ namespace GladiatorsArena
             set { name = value; }
         }
 
-        private int health = 15;
+        private int health = Battle.MaxFighterHealth;
 
         public int Health
         {
             get { return health; }
             set
             {
-                damageLog.Push(value);
-                health -= damageLog.Peek();
+                damageTrack.Push(value);
+                health -= damageTrack.Peek();
                 HealthUpdate?.Invoke();
                 if (health <= 0)
-                    DeadFighter?.Invoke();
+                    IsDead = true;                   
             }
         }
 
         // Members
-
-        public void AssigneHealthListeners()
-        {
-            this.HealthUpdate += HealthUpdateListener;
-            this.DeadFighter += DeadFighterListener;
-        }
 
         // Event Listeners
 
@@ -85,17 +81,7 @@ namespace GladiatorsArena
         public void HealthUpdateListener()
         {
             int health = this.Health < 0 ? 0 : this.Health;
-            Console.WriteLine($"{this.Name} was damaged and lost {damageLog.Pop()} health. Now has a health of {health}");
-        }
-
-        /// <summary>
-		/// Display that the given fighter has lost his life and switch Battle.IsStillOn to false
-		/// </summary>
-		/// <param name="fighter"></param>
-		public void DeadFighterListener()
-        {
-            Console.WriteLine($"{this.Name} has lost his life! The game is over.");
-            Battle.IsStillOn = false;
+            Console.WriteLine($"{this.Name} was damaged and lost {damageTrack.Pop()}. His health is now down to {health}.");
         }
 
         // IDisposable Members
@@ -107,7 +93,7 @@ namespace GladiatorsArena
         /// </summary>
         public void Dispose()
         {
-            damageLog.Clear();
+            damageTrack.Clear();
             fightPosition = 0;
         }
     }

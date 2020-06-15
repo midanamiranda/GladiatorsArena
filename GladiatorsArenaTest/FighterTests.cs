@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GladiatorsArena;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace GladiatorsArenaTest
 {
@@ -23,7 +24,7 @@ namespace GladiatorsArenaTest
         public void CreateFighterWithHealthSet()
         {
             // Arrange
-            int expected = 15;
+            int expected = Battle.MaxFighterHealth;
             // Act
             using Fighter fighter = new Fighter();
             // Assert
@@ -34,7 +35,7 @@ namespace GladiatorsArenaTest
         public void CreateFighterWithNameAndAutomaticCodeAndHealth()
         {
             // Arrange
-            string expected = "My name is Hercules, my health is still on 15 and my code is 1";
+            string expected = $"My name is Hercules, my health is still on {Battle.MaxFighterHealth} and my code is 1";
             // Act
             using Fighter hercules = new Fighter("Hercules");
             string actual = $"My name is {hercules.Name}, my health is still on {hercules.Health} and my code is {hercules.Code}";
@@ -68,9 +69,9 @@ namespace GladiatorsArenaTest
         {
             // Arrange
             using Fighter fighter = new Fighter();
-
-            int expected = 7;
+            
             int damage = 8;
+            int expected = Battle.MaxFighterHealth - damage;
             // Act
             fighter.Health = damage;
             int actual = fighter.Health;
@@ -89,7 +90,7 @@ namespace GladiatorsArenaTest
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
 
-            string expected = $"Hercules was damaged and lost {damage} health. Now has a health of {15 - damage}{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost {damage}. His health is now down to {Battle.MaxFighterHealth - damage}.{Environment.NewLine}";
             // Act
             hercules.Health = damage;
 
@@ -112,9 +113,9 @@ namespace GladiatorsArenaTest
 
             int damage = 5;
 
-            string expected = $"Hercules was damaged and lost 5 health. Now has a health of 10{Environment.NewLine}"
-                                  + $"Conan was damaged and lost 6 health. Now has a health of 9{Environment.NewLine}"
-                                  + $"Jet Lee was damaged and lost 7 health. Now has a health of 8{Environment.NewLine}";
+            string expected = $"Hercules was damaged and lost 5. His health is now down to {Battle.MaxFighterHealth - 5}.{Environment.NewLine}"
+                                  + $"Conan was damaged and lost 6. His health is now down to {Battle.MaxFighterHealth - 6}.{Environment.NewLine}"
+                                  + $"Jet Lee was damaged and lost 7. His health is now down to {Battle.MaxFighterHealth - 7}.{Environment.NewLine}";
 
             using StringWriter stringWriter = new StringWriter();
             Console.SetOut(stringWriter);
