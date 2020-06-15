@@ -55,7 +55,7 @@ namespace GladiatorsArenaTest
             using Fighter conan = new Fighter("Conan");
             using Fighter jetLee = new Fighter("Jet Lee");
 
-            string actualHercules = $"{hercules.Health}, and my code is {hercules.Code}";
+            string actualHercules = $"{hercules.Name}, and my code is {hercules.Code}";
             string actualConan = $"{conan.Name}, and my code is {conan.Code}";
             string actualJetLee = $"{jetLee.Name}, and my code is {jetLee.Code}";
             // Assert
