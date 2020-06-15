@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/midanamiranda/midanamiranda/_apis/build/status/midanamiranda.GladiatorsArena?branchName=master)](https://dev.azure.com/midanamiranda/midanamiranda/_build/latest?definitionId=1&branchName=master)
+![.NET Core](https://github.com/midanamiranda/GladiatorsArena/workflows/.NET%20Core/badge.svg)
 
 # GladiatorsArena
 Exploring C# capabilities in a Gladiators Storytelling console app
